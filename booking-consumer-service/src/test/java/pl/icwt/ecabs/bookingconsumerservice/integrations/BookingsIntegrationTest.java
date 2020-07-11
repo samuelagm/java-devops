@@ -1,4 +1,4 @@
-package pl.icwt.ecabs.bookingconsumerservice.integration;
+package pl.icwt.ecabs.bookingconsumerservice.integrations;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import pl.icwt.ecabs.bookingconsumerservice.entities.Booking;
 import pl.icwt.ecabs.bookingconsumerservice.entities.TripWaypoint;
+import pl.icwt.ecabs.bookingconsumerservice.listeners.BookingsListener;
 import pl.icwt.ecabs.bookingconsumerservice.repositories.BookingsRepository;
 import pl.icwt.ecabs.dtos.BookingDTO;
 import pl.icwt.ecabs.dtos.TripWaypointDTO;

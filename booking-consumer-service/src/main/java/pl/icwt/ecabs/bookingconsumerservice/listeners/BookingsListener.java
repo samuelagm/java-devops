@@ -1,4 +1,4 @@
-package pl.icwt.ecabs.bookingconsumerservice.integration;
+package pl.icwt.ecabs.bookingconsumerservice.listeners;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;

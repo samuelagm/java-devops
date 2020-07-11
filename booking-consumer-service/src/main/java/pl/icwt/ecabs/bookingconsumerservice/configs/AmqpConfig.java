@@ -8,7 +8,7 @@ import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import pl.icwt.ecabs.bookingconsumerservice.integration.BookingErrorHandler;
+import pl.icwt.ecabs.bookingconsumerservice.listeners.BookingErrorHandler;
 import pl.icwt.ecabs.consts.AmqpConsts;
 
 import java.util.HashMap;
