@@ -37,10 +37,11 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build and push the Docker image
-        run: |
-            cd ${{ matrix.project }}
-            docker build -t ${{ env.GHCR }}${{ matrix.project }}:${{ github.sha }} -t ${{ env.GHCR }}${{ matrix.project }}:latest .
-            docker push ${{ env.GHCR }}${{ matrix.project }}:${{ github.sha }}
-            docker push ${{ env.GHCR }}${{ matrix.project }}:latest
+      - name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+            context: "{{defaultContext}}:${{ matrix.project }}"
+            push: true
+            tags: |
+              ${{ env.GHCR }}${{ matrix.project }}:latest
+              ${{ env.GHCR }}${{ matrix.project }}:${{ github.sha }}
