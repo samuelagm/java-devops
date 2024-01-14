@@ -34,6 +34,7 @@ jobs:
         matrix:
           project: [booking-consumer-service, booking-producer-service]
     steps:
+      - uses: actions/checkout@v4
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
@@ -44,13 +45,15 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      
       - uses: actions/download-artifact@v4
         with:
-          path: ${{ matrix.project }}
+          path: ${{ matrix.project }}/target/
           pattern: ${{ matrix.project }}
 
       - name: Build and push
         uses: docker/build-push-action@v3
+        
         with:
             context: "{{defaultContext}}:${{ matrix.project }}"
             push: true
