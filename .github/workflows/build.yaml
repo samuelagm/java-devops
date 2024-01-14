@@ -18,7 +18,7 @@ jobs:
           distribution: 'microsoft'
           cache: 'maven'
       - run: mvn --batch-mode --update-snapshots verify
-      
+
       - uses: actions/upload-artifact@v4
         with:
           name: booking-consumer-service
@@ -50,7 +50,7 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-
+      - uses: actions/checkout@v4
       
       - uses: actions/download-artifact@v4
         with:
@@ -58,7 +58,11 @@ jobs:
           pattern: ${{ matrix.project }}
 
       - name: Display structure of downloaded files
-        run: ls -R .
+        run: |
+          mkdir target
+          cp *.jar ./target
+          ls -R .
+          ls -R ./target
 
       - name: Build and push
         uses: docker/build-push-action@v3
