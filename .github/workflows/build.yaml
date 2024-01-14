@@ -59,9 +59,10 @@ jobs:
 
       - name: Re-arrange downloaded files
         run: |
+          cd ${{ matrix.project }}
           mkdir target
-          cp ${{ matrix.project }}/*.jar ./target
-          ls -R ${{ matrix.project }}
+          mv *.jar target
+          ls -R target
 
       - name: Build and push
         uses: docker/build-push-action@v3
