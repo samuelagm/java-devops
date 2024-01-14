@@ -18,6 +18,12 @@ jobs:
           distribution: 'microsoft'
           cache: 'maven'
       - run: mvn --batch-mode --update-snapshots verify
+      - uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: |
+            booking-consumer-service/target/*.jar
+            booking-producer-service/target/*.jar
 
   docker-build:
     needs: mvn-build
@@ -37,6 +43,12 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: ${{ matrix.project }}
+          pattern: ${{ matrix.project }}
+
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
