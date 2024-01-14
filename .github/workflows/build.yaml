@@ -58,11 +58,8 @@ jobs:
           pattern: ${{ matrix.project }}
 
       - name: Display structure of downloaded files
-        run: |
-          mkdir target
-          cp *.jar ./target
+        run: 
           ls -R .
-          ls -R ./target
 
       - name: Build and push
         uses: docker/build-push-action@v3
