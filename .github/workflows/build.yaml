@@ -18,12 +18,18 @@ jobs:
           distribution: 'microsoft'
           cache: 'maven'
       - run: mvn --batch-mode --update-snapshots verify
+      
       - uses: actions/upload-artifact@v4
         with:
-          name: build-artifacts
-          path: |
+          name: booking-consumer-service
+          path: 
             booking-consumer-service/target/*.jar
-            booking-producer-service/target/*.jar
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: booking-producer-service
+          path: 
+            booking-producer-service/target/*.jar           
 
   docker-build:
     needs: mvn-build
@@ -34,7 +40,6 @@ jobs:
         matrix:
           project: [booking-consumer-service, booking-producer-service]
     steps:
-      - uses: actions/checkout@v4
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
@@ -49,11 +54,11 @@ jobs:
       
       - uses: actions/download-artifact@v4
         with:
-          path: ${{ matrix.project }}/target/
+          path: .
           pattern: ${{ matrix.project }}
 
       - name: Display structure of downloaded files
-        run: ls -R ${{ matrix.project }}/target/
+        run: ls -R .
 
       - name: Build and push
         uses: docker/build-push-action@v3
