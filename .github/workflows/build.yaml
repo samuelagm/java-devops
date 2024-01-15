@@ -132,7 +132,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./k8
+        working-directory: ./k8s
     strategy:
       matrix:
         project: [booking-consumer-service, booking-producer-service]
