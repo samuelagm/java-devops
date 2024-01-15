@@ -4,9 +4,13 @@ on:
   push:
     branches:
     - master
-
     # An alternative approach could 
     # be to trigger this workflow on release tags
+
+env:
+  GHCR: ghcr.io/samuelagm/
+  CLUSTER_NAME: main
+  TF_VAR_cluster_name: main
 
 jobs:
   mvn-build:
@@ -35,8 +39,6 @@ jobs:
   docker-build:
     needs: mvn-build
     runs-on: ubuntu-latest
-    env:
-      GHCR: ghcr.io/samuelagm/
     strategy:
         matrix:
           project: [booking-consumer-service, booking-producer-service]
@@ -75,7 +77,6 @@ jobs:
               ${{ env.GHCR }}${{ matrix.project }}:${{ github.sha }}
   
   infra-setup:
-    needs: mvn-build
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -99,8 +100,7 @@ jobs:
     
       - name: Terraform Apply
         run: terraform apply -auto-approve
-
-        
+      
   services-setup:
     needs: infra-setup
     runs-on: ubuntu-latest
@@ -126,3 +126,32 @@ jobs:
     
       - name: Terraform Apply
         run: terraform apply -auto-approve
+
+  deployment:
+    needs: [services-setup, mvn-build]
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./k8
+    strategy:
+      matrix:
+        project: [booking-consumer-service, booking-producer-service]
+    steps:
+      - uses: actions/checkout@main
+
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DO_TOKEN }}
+      - name: Update deployment file
+        run: sed -i 's|{{IMAGE}}|'"${{ env.GHCR }}${{ matrix.project }}${{ github.sha }}"'|' ${{ matrix.project }}.yml
+
+      - name: Save DigitalOcean kubeconfig with short-lived credentials
+        run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{ env.CLUSTER_NAME }}
+
+      - name: Deploy to DigitalOcean Kubernetes
+        run: kubectl apply -f ${{ matrix.project }}.yml
+
+      - name: Verify deployment
+        run: kubectl rollout status deployment/${{ matrix.project }}
+        

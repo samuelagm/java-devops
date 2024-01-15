@@ -22,7 +22,7 @@ provider "digitalocean" {
 }
 
 data "digitalocean_kubernetes_cluster" "ecabs_cluster" {
-  name = "main"
+  name = var.cluster_name
 }
 
 resource "helm_release" "rabbitmq" {

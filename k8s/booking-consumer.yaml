@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: booking-consumer
+  labels:
+    app: booking-consumer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: booking-consumer
+  template:
+    metadata:
+      labels:
+        app: booking-consumer
+    spec:
+      containers:
+      - name: booking-consumer
+        image: "{{IMAGE}}" # To be replaced in CI/CD environment
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        env:
+        - name: SPRING_RABBITMQ_HOST
+          value: "rabbitmq.broker.svc.cluster.local"
+
