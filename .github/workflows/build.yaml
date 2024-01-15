@@ -82,17 +82,10 @@ jobs:
         working-directory: ./deployment/terraform/infra
     env:
       TF_VAR_DO_TOKEN: ${{ secrets.DO_TOKEN }}
+      AWS_ACCESS_KEY_ID:  ${{ secrets.DO_KEY_SECRET }}
+      AWS_SECRET_ACCESS_KEY:  ${{ secrets.DO_KEY_SECRET }}
 
     steps:
-      # This is only required because the terraform supports only s3 compatible backends, 
-      # digital ocean's Spaces is compatible and can use AWS credentials to transport it's auth
-      - name: Configure AWS credentials for DO Auth
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.DO_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.DO_KEY_SECRET }}
-          aws-region: eu-west-1
-
       - name: Checkout repository
         uses: actions/checkout@v2
       - uses: hashicorp/setup-terraform@v3
