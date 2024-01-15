@@ -135,7 +135,7 @@ jobs:
         working-directory: ./k8s
     strategy:
       matrix:
-        project: [booking-consumer-service, booking-producer-service]
+        project: [booking-consumer, booking-producer]
     steps:
       - uses: actions/checkout@main
 
@@ -144,7 +144,7 @@ jobs:
         with:
           token: ${{ secrets.DO_TOKEN }}
       - name: Update deployment file
-        run: sed -i 's|{{IMAGE}}|'"${{ env.GHCR }}${{ matrix.project }}${{ github.sha }}"'|' ${{ matrix.project }}.yml
+        run: sed -i 's|{{IMAGE}}|'"${{ env.GHCR }}${{ matrix.project }}-service:${{ github.sha }}"'|' ${{ matrix.project }}.yml
 
       - name: Save DigitalOcean kubeconfig with short-lived credentials
         run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{ env.CLUSTER_NAME }}
