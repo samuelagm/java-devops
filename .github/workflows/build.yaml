@@ -128,7 +128,7 @@ jobs:
         run: terraform apply -auto-approve
 
   deployment:
-    needs: [services-setup, mvn-build]
+    needs: [services-setup, docker-build]
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -144,13 +144,13 @@ jobs:
         with:
           token: ${{ secrets.DO_TOKEN }}
       - name: Update deployment file
-        run: sed -i 's|{{IMAGE}}|'"${{ env.GHCR }}${{ matrix.project }}-service:${{ github.sha }}"'|' ${{ matrix.project }}.yml
+        run: sed -i 's|{{IMAGE}}|'"${{ env.GHCR }}${{ matrix.project }}-service:${{ github.sha }}"'|' ${{ matrix.project }}.yaml
 
       - name: Save DigitalOcean kubeconfig with short-lived credentials
         run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{ env.CLUSTER_NAME }}
 
       - name: Deploy to DigitalOcean Kubernetes
-        run: kubectl apply -f ${{ matrix.project }}.yml
+        run: kubectl apply -f ${{ matrix.project }}.yaml
 
       - name: Verify deployment
         run: kubectl rollout status deployment/${{ matrix.project }}
