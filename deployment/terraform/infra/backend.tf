@@ -1,7 +1,7 @@
 
 terraform {
   backend "s3" {
-    endpoint                    = "ams3.digitaloceanspaces.com/" # specify the correct DO region
+    endpoint                    = "https://ams3.digitaloceanspaces.com" # specify the correct DO region
     region                      = "eu-west-1"                    # not used since it's a DigitalOcean spaces bucket
     key                         = "infra.tfstate"
     bucket                      = "ecabs" # The name of your Spaces
