@@ -81,10 +81,7 @@ jobs:
       run:
         working-directory: ./deployment/terraform/infra
     env:
-      TF_VAR_DO_TOKEN: ${{ secrets.DO_TOKEN }}
-      AWS_ACCESS_KEY_ID:  ${{ secrets.DO_KEY_SECRET }}
-      AWS_SECRET_ACCESS_KEY:  ${{ secrets.DO_KEY_SECRET }}
-
+      TF_VAR_do_token: ${{ secrets.DO_TOKEN }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -95,7 +92,7 @@ jobs:
         continue-on-error: true
     
       - name: Terraform Init
-        run: terraform init
+        run: terraform init -backend-config "access_key=${{ secrets.DO_KEY_ID }}"-backend-config "secret_key=${{ secrets.DO_KEY_SECRET }}"
     
       - name: Terraform Validate
         run: terraform validate -no-color
