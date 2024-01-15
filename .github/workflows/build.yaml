@@ -4,6 +4,7 @@ on:
   push:
     branches:
     - master
+
     # An alternative approach could 
     # be to trigger this workflow on release tags
 
@@ -62,7 +63,6 @@ jobs:
           cd ${{ matrix.project }}
           mkdir target
           mv *.jar target
-          ls -R target
 
       - name: Build and push
         uses: docker/build-push-action@v3
@@ -73,3 +73,40 @@ jobs:
             tags: |
               ${{ env.GHCR }}${{ matrix.project }}:latest
               ${{ env.GHCR }}${{ matrix.project }}:${{ github.sha }}
+  
+  infra-setup:
+    needs: mvn-build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./deployment/terraform/infra
+    env:
+      TF_VAR_DO_TOKEN: ${{ secrets.DO_TOKEN }}
+
+    steps:
+      # This is only required because the terraform supports only s3 compatible backends, 
+      # digital ocean's Spaces is compatible and can use AWS credentials to transport it's auth
+      - name: Configure AWS credentials for DO Auth
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.DO_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.DO_KEY_SECRET }}
+          aws-region: eu-west-1
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform fmt
+        run: terraform fmt -check
+        continue-on-error: true
+    
+      - name: Terraform Init
+        run: terraform init
+    
+      - name: Terraform Validate
+        run: terraform validate -no-color
+    
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
+    
