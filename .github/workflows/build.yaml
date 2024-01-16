@@ -158,7 +158,7 @@ jobs:
           sed -i 's|{{SPRING_RABBITMQ_HOST}}|'"${{ vars.SPRING_RABBITMQ_HOST }}"'|' ${{ matrix.project }}.yaml
           sed -i 's|{{SPRING_RABBITMQ_PORT}}|'"${{ vars.SPRING_RABBITMQ_PORT }}"'|' ${{ matrix.project }}.yaml
           sed -i 's|{{SPRING_RABBITMQ_USERNAME}}|'"${{ vars.SPRING_RABBITMQ_USERNAME }}"'|' ${{ matrix.project }}.yaml
-          sed -i 's|{{SPRING_RABBITMQ_PASSWORD}}|'""'|' ${{ matrix.project }}.yaml
+          sed -i 's|{{SPRING_RABBITMQ_PASSWORD}}|'"${{ secrets.SPRING_RABBITMQ_PASSWORD }}"'|' ${{ matrix.project }}.yaml
           sed -i 's|{{SPRING_RABBITMQ_LISTENER_DIRECT_DEFAULTREQUEUEREJECTED}}|'"${{ vars.SPRING_RABBITMQ_LISTENER_DIRECT_DEFAULTREQUEUEREJECTED }}"'|' ${{ matrix.project }}.yaml
           sed -i 's|{{SPRING_DATASOURCE_URL}}|'"${{ vars.SPRING_DATASOURCE_URL }}"'|' ${{ matrix.project }}.yaml
           sed -i 's|{{SPRING_DATASOURCE_DRIVERCLASSNAME}}|'"${{ vars.SPRING_DATASOURCE_DRIVERCLASSNAME }}"'|' ${{ matrix.project }}.yaml
@@ -174,8 +174,8 @@ jobs:
           sed -i 's|{{SPRING_RABBITMQ_HOST}}|'"${{ vars.SPRING_RABBITMQ_HOST }}"'|' ${{ matrix.project }}.yaml
           sed -i 's|{{SPRING_RABBITMQ_PORT}}|'"${{ vars.SPRING_RABBITMQ_PORT }}"'|' ${{ matrix.project }}.yaml
           sed -i 's|{{SPRING_RABBITMQ_USERNAME}}|'"${{ vars.SPRING_RABBITMQ_USERNAME }}"'|' ${{ matrix.project }}.yaml
-          sed -i 's|{{SPRING_RABBITMQ_PASSWORD}}|'""'|' ${{ matrix.project }}.yaml
-          sed -i 's|{{SPRING_MAIN_ALLOWBEANDEFINITIONOVERRIDING}}|'"${{ secrets.SPRING_MAIN_ALLOWBEANDEFINITIONOVERRIDING }}"'|' ${{ matrix.project }}.yaml
+          sed -i 's|{{SPRING_RABBITMQ_PASSWORD}}|'"${{ secrets.SPRING_RABBITMQ_PASSWORD }}"'|' ${{ matrix.project }}.yaml
+          sed -i 's|{{SPRING_MAIN_ALLOWBEANDEFINITIONOVERRIDING}}|'"${{ vars.SPRING_MAIN_ALLOWBEANDEFINITIONOVERRIDING }}"'|' ${{ matrix.project }}.yaml
         
       - name: Save DigitalOcean kubeconfig with short-lived credentials
         run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{ env.CLUSTER_NAME }}

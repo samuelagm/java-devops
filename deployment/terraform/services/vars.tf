@@ -12,7 +12,7 @@ variable "rabbitmq_username" {
 
 variable "rabbitmq_password" {
   type    = string
-  default = ""
+  default = "password"
   sensitive = true
 }
 
