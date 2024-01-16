@@ -7,12 +7,12 @@ variable "cluster_name" {
 
 variable "rabbitmq_username" {
   type    = string
-  default = "guest"
+  default = "user"
 }
 
 variable "rabbitmq_password" {
   type    = string
-  default = "guest"
+  default = ""
   sensitive = true
 }
 

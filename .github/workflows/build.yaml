@@ -94,7 +94,10 @@ jobs:
     
       - name: Terraform Init
         run: terraform init -backend-config "access_key=${{ secrets.DO_KEY_ID }}" -backend-config "secret_key=${{ secrets.DO_KEY_SECRET }}"
-    
+             
+      - name: Terraform Plan
+        run: terraform plan -no-color
+
       - name: Terraform Validate
         run: terraform validate -no-color
     
@@ -123,6 +126,9 @@ jobs:
     
       - name: Terraform Validate
         run: terraform validate -no-color
+            
+      - name: Terraform Plan
+        run: terraform plan -no-color
     
       - name: Terraform Apply
         run: terraform apply -auto-approve
@@ -152,7 +158,7 @@ jobs:
           sed -i 's|{{SPRING_RABBITMQ_HOST}}|'"${{ vars.SPRING_RABBITMQ_HOST }}"'|' ${{ matrix.project }}.yaml
           sed -i 's|{{SPRING_RABBITMQ_PORT}}|'"${{ vars.SPRING_RABBITMQ_PORT }}"'|' ${{ matrix.project }}.yaml
           sed -i 's|{{SPRING_RABBITMQ_USERNAME}}|'"${{ vars.SPRING_RABBITMQ_USERNAME }}"'|' ${{ matrix.project }}.yaml
-          sed -i 's|{{SPRING_RABBITMQ_PASSWORD}}|'"${{ secrets.SPRING_RABBITMQ_PASSWORD }}"'|' ${{ matrix.project }}.yaml
+          sed -i 's|{{SPRING_RABBITMQ_PASSWORD}}|'""'|' ${{ matrix.project }}.yaml
           sed -i 's|{{SPRING_RABBITMQ_LISTENER_DIRECT_DEFAULTREQUEUEREJECTED}}|'"${{ vars.SPRING_RABBITMQ_LISTENER_DIRECT_DEFAULTREQUEUEREJECTED }}"'|' ${{ matrix.project }}.yaml
           sed -i 's|{{SPRING_DATASOURCE_URL}}|'"${{ vars.SPRING_DATASOURCE_URL }}"'|' ${{ matrix.project }}.yaml
           sed -i 's|{{SPRING_DATASOURCE_DRIVERCLASSNAME}}|'"${{ vars.SPRING_DATASOURCE_DRIVERCLASSNAME }}"'|' ${{ matrix.project }}.yaml
@@ -168,7 +174,7 @@ jobs:
           sed -i 's|{{SPRING_RABBITMQ_HOST}}|'"${{ vars.SPRING_RABBITMQ_HOST }}"'|' ${{ matrix.project }}.yaml
           sed -i 's|{{SPRING_RABBITMQ_PORT}}|'"${{ vars.SPRING_RABBITMQ_PORT }}"'|' ${{ matrix.project }}.yaml
           sed -i 's|{{SPRING_RABBITMQ_USERNAME}}|'"${{ vars.SPRING_RABBITMQ_USERNAME }}"'|' ${{ matrix.project }}.yaml
-          sed -i 's|{{SPRING_RABBITMQ_PASSWORD}}|'"${{ secrets.SPRING_RABBITMQ_PASSWORD }}"'|' ${{ matrix.project }}.yaml
+          sed -i 's|{{SPRING_RABBITMQ_PASSWORD}}|'""'|' ${{ matrix.project }}.yaml
           sed -i 's|{{SPRING_MAIN_ALLOWBEANDEFINITIONOVERRIDING}}|'"${{ secrets.SPRING_MAIN_ALLOWBEANDEFINITIONOVERRIDING }}"'|' ${{ matrix.project }}.yaml
         
       - name: Save DigitalOcean kubeconfig with short-lived credentials
