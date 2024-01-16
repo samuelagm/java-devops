@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: booking-consumer
-        image: "{{IMAGE}}" # To be replaced in CI/CD environment
+        image: "{{IMAGE}}"
         resources:
           requests:
             memory: "256Mi"
@@ -24,7 +24,28 @@ spec:
           limits:
             memory: "512Mi"
             cpu: "500m"
-        env:
-        - name: SPRING_RABBITMQ_HOST
-          value: "rabbitmq.broker.svc.cluster.local"
-
+          env:
+          - name: SPRING_RABBITMQ_HOST
+            value: "{{SPRING_RABBITMQ_HOST}}"
+          - name: SPRING_RABBITMQ_PORT
+            value: "{{SPRING_RABBITMQ_PORT}}"
+          - name: SPRING_RABBITMQ_USERNAME
+            value: "{{SPRING_RABBITMQ_USERNAME}}"
+          - name: SPRING_RABBITMQ_PASSWORD
+            value: "{{SPRING_RABBITMQ_PASSWORD}}"
+          - name: SPRING_RABBITMQ_LISTENER_DIRECT_DEFAULTREQUEUEREJECTED
+            value: "{{SPRING_RABBITMQ_LISTENER_DIRECT_DEFAULTREQUEUEREJECTED}}"
+          - name: SPRING_DATASOURCE_URL
+            value: "{{SPRING_DATASOURCE_URL}}"
+          - name: SPRING_DATASOURCE_DRIVERCLASSNAME
+            value: "{{SPRING_DATASOURCE_DRIVERCLASSNAME}}"
+          - name: SPRING_DATASOURCE_USERNAME
+            value: "{{SPRING_DATASOURCE_USERNAME}}"
+          - name: SPRING_DATASOURCE_PASSWORD
+            value: "{{SPRING_DATASOURCE_PASSWORD}}"
+          - name: SPRING_JPA_DATABASEPLATFORM
+            value: "{{SPRING_JPA_DATABASEPLATFORM}}"
+          - name: SPRING_JPA_HIBERNATE_DDLAUTO
+            value: "{{SPRING_JPA_HIBERNATE_DDLAUTO}}"
+          - name: SPRING_JPA_GENERATEDDL
+            value: "{{SPRING_JPA_GENERATEDDL}}"

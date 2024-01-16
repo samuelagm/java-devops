@@ -26,6 +26,17 @@ spec:
           limits:
             memory: "512Mi"
             cpu: "500m"
+        env:
+        - name: SPRING_MAIN_ALLOWBEANDEFINITIONOVERRIDING
+          value: "{{SPRING_MAIN_ALLOWBEANDEFINITIONOVERRIDING}}"
+        - name: SPRING_RABBITMQ_HOST
+          value: "{{SPRING_RABBITMQ_HOST}}"
+        - name: SPRING_RABBITMQ_PORT
+          value: "{{SPRING_RABBITMQ_PORT}}"
+        - name: SPRING_RABBITMQ_USERNAME
+          value: "{{SPRING_RABBITMQ_USERNAME}}"
+        - name: SPRING_RABBITMQ_PASSWORD
+          value: "{{SPRING_RABBITMQ_PASSWORD}}"
 ---
 apiVersion: v1
 kind: Service

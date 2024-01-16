@@ -143,9 +143,34 @@ jobs:
         uses: digitalocean/action-doctl@v2
         with:
           token: ${{ secrets.DO_TOKEN }}
-      - name: Update deployment file
+      - name: Update deployment image
         run: sed -i 's|{{IMAGE}}|'"${{ env.GHCR }}${{ matrix.project }}-service:${{ github.sha }}"'|' ${{ matrix.project }}.yaml
 
+      - name: (booking-consumer) Replace Environment Variables
+        if: ${{ matrix.project }} == 'booking-consumer'
+        run: |
+          sed -i 's|{{SPRING_RABBITMQ_HOST}}|'"${{ vars.SPRING_RABBITMQ_HOST }}"'|' ${{ matrix.project }}.yaml
+          sed -i 's|{{SPRING_RABBITMQ_PORT}}|'"${{ vars.SPRING_RABBITMQ_PORT }}"'|' ${{ matrix.project }}.yaml
+          sed -i 's|{{SPRING_RABBITMQ_USERNAME}}|'"${{ vars.SPRING_RABBITMQ_USERNAME }}"'|' ${{ matrix.project }}.yaml
+          sed -i 's|{{SPRING_RABBITMQ_PASSWORD}}|'"${{ secrets.SPRING_RABBITMQ_PASSWORD }}"'|' ${{ matrix.project }}.yaml
+          sed -i 's|{{SPRING_RABBITMQ_LISTENER_DIRECT_DEFAULTREQUEUEREJECTED}}|'"${{ vars.SPRING_RABBITMQ_LISTENER_DIRECT_DEFAULTREQUEUEREJECTED }}"'|' ${{ matrix.project }}.yaml
+          sed -i 's|{{SPRING_DATASOURCE_URL}}|'"${{ vars.SPRING_DATASOURCE_URL }}"'|' ${{ matrix.project }}.yaml
+          sed -i 's|{{SPRING_DATASOURCE_DRIVERCLASSNAME}}|'"${{ vars.SPRING_DATASOURCE_DRIVERCLASSNAME }}"'|' ${{ matrix.project }}.yaml
+          sed -i 's|{{SPRING_DATASOURCE_USERNAME}}|'"${{ vars.SPRING_DATASOURCE_USERNAME }}"'|' ${{ matrix.project }}.yaml
+          sed -i 's|{{SPRING_DATASOURCE_PASSWORD}}|'"${{ secrets.SPRING_DATASOURCE_PASSWORD }}"'|' ${{ matrix.project }}.yaml
+          sed -i 's|{{SPRING_JPA_DATABASEPLATFORM}}|'"${{ vars.SPRING_JPA_DATABASEPLATFORM }}"'|' ${{ matrix.project }}.yaml
+          sed -i 's|{{SPRING_JPA_HIBERNATE_DDLAUTO}}|'"${{ vars.SPRING_JPA_HIBERNATE_DDLAUTO }}"'|' ${{ matrix.project }}.yaml
+          sed -i 's|{{SPRING_JPA_GENERATEDDL}}|'"${{ vars.SPRING_JPA_GENERATEDDL }}"'|' ${{ matrix.project }}.yaml
+
+      - name: (booking-producer) Replace Environment Variables
+        if: ${{ matrix.project }} == 'booking-producer'
+        run: |
+          sed -i 's|{{SPRING_RABBITMQ_HOST}}|'"${{ vars.SPRING_RABBITMQ_HOST }}"'|' ${{ matrix.project }}.yaml
+          sed -i 's|{{SPRING_RABBITMQ_PORT}}|'"${{ vars.SPRING_RABBITMQ_PORT }}"'|' ${{ matrix.project }}.yaml
+          sed -i 's|{{SPRING_RABBITMQ_USERNAME}}|'"${{ vars.SPRING_RABBITMQ_USERNAME }}"'|' ${{ matrix.project }}.yaml
+          sed -i 's|{{SPRING_RABBITMQ_PASSWORD}}|'"${{ secrets.SPRING_RABBITMQ_PASSWORD }}"'|' ${{ matrix.project }}.yaml
+          sed -i 's|{{SPRING_MAIN_ALLOWBEANDEFINITIONOVERRIDING}}|'"${{ secrets.SPRING_MAIN_ALLOWBEANDEFINITIONOVERRIDING }}"'|' ${{ matrix.project }}.yaml
+        
       - name: Save DigitalOcean kubeconfig with short-lived credentials
         run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{ env.CLUSTER_NAME }}
 
