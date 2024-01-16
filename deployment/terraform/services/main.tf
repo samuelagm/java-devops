@@ -31,14 +31,4 @@ resource "helm_release" "rabbitmq" {
   chart            = "rabbitmq"
   create_namespace = true
   namespace        = "broker"
-
-  set {
-    name  = "auth.username"
-    value = var.rabbitmq_username
-  }
-
-  set {
-    name  = "auth.password"
-    value = var.rabbitmq_password
-  }
 }
