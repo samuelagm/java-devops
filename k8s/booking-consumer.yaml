@@ -24,6 +24,14 @@ spec:
           limits:
             memory: "512Mi"
             cpu: "500m"
+        livenessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - "pgrep -f 'java -jar booking-consumer-service.jar'"
+          initialDelaySeconds: 10
+          periodSeconds: 5
         env:
         - name: SPRING_RABBITMQ_HOST
           value: "{{SPRING_RABBITMQ_HOST}}"
