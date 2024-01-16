@@ -29,9 +29,9 @@ spec:
             command:
             - sh
             - -c
-            - "pgrep -f 'java -jar booking-consumer-service.jar'"
-          initialDelaySeconds: 10
-          periodSeconds: 5
+            - "pgrep -f 'java -jar booking-consumer-service.jar'" # not adequate, but helps
+          initialDelaySeconds: 30
+          periodSeconds: 15
         env:
         - name: SPRING_RABBITMQ_HOST
           value: "{{SPRING_RABBITMQ_HOST}}"

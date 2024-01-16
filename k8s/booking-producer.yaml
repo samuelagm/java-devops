@@ -30,14 +30,14 @@ spec:
           httpGet:
             path: /swagger-ui/index.html
             port: 8080
-          initialDelaySeconds: 10
-          periodSeconds: 5
+          initialDelaySeconds: 30
+          periodSeconds: 10
         readinessProbe:
           httpGet:
             path: /swagger-ui/index.html
             port: 8080
-          initialDelaySeconds: 10
-          periodSeconds: 5
+          initialDelaySeconds: 30
+          periodSeconds: 10
         env:
         - name: SPRING_MAIN_ALLOWBEANDEFINITIONOVERRIDING
           value: "{{SPRING_MAIN_ALLOWBEANDEFINITIONOVERRIDING}}"
